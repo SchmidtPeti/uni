@@ -1,6 +1,5 @@
 import React from 'react';
-import {Container,Row,Col,Nav} from 'react-bootstrap';
-import AddMatAlapTask from './AddMatAlapTask';
+import {Container,Row,Col} from 'react-bootstrap';
 
 
 const HomePage = () =>{
@@ -8,23 +7,10 @@ const HomePage = () =>{
     <div className='app'>
         <Container>
             <Row>
-                <Col>
-                <Nav defaultActiveKey="/home" as="ul">
-  <Nav.Item as="li">
-    <Nav.Link href="/home">Active</Nav.Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Nav.Link eventKey="link-1">Link</Nav.Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Nav.Link eventKey="link-2">Link</Nav.Link>
-  </Nav.Item>
-</Nav>
-                </Col>
-                <Col>
-                    <AddMatAlapTask />
-                </Col>
-            </Row>
+            <Col>
+               <h1>This is the HomePage!</h1>
+            </Col>
+            </Row> 
         </Container>
     </div>   );
 };
