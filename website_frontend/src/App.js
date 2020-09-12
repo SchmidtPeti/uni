@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import HomePage from './Pages/Home';
 import AddMatAlapTask from './Pages/AddMatAlapTask';
+import VeletlenPage from './Pages/VeletlenTask';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import S3FileUpload from 'react-s3';
 import {Nav,Form,Button} from 'react-bootstrap';
@@ -33,7 +34,10 @@ class App extends Component {
         time : 0,
         difficulty : 0,
         isLoading: false,
+        solution_showed : false,
+        solution_stepbystep_showed : false,
     }
+    
   }
     componentDidMount = async () => {
       this.setState({ isLoading: true })
@@ -44,7 +48,6 @@ class App extends Component {
               isLoading: false,
           })
       });
-      console.log(this.state.MatAlapTasks);
     };
       myChangeHandler = (event) => {//used on admin page to login
         let nam = event.target.name;
@@ -62,6 +65,12 @@ class App extends Component {
     onFileChangeSolutation= event => {
       this.setState({ solutation: event.target.files[0] }); 
     }
+    onShowSolutation = () => {
+      this.setState({solution_showed : true});
+  }
+  onSolution_stepbystep = () => {
+      this.setState({solution_stepbystep_showed : true})
+  }
 
     submitMatAlap = async () =>{
         await this.uploadFileToS3(); //wrong input can t be fatal
@@ -97,15 +106,19 @@ class App extends Component {
   <Nav.Item as="li">
     <Nav.Link eventKey="link-2"><Link to="/addMatek">Matek feladat hozzáadás</Link></Nav.Link>
   </Nav.Item>
+  <Nav.Item as="li">
+    <Nav.Link eventKey="link-3"><Link to="/veletlen">Veletlen</Link></Nav.Link>
+  </Nav.Item>
 </Nav>
-      <Switch>
+      <Switch>  
           <Route exact path="/addMatek">
           <AddMatAlapTask myChangeHandler={this.myChangeHandler} submitMatAlap={this.submitMatAlap} onFileChange={this.onFileChange} onFileChangeTaskDesc={this.onFileChangeTaskDesc} onFileChangeSolutation={this.onFileChangeSolutation}/>           
           </Route>
           <Route path="/home">
-            <HomePage MatAlapTasks={this.state.MatAlapTasks} />
+            <HomePage MatAlapTasks={this.state.MatAlapTasks} solution_showed={this.state.solution_showed} solution_stepbystep_showed={this.state.solution_stepbystep_showed} onShowSolutation={this.onShowSolutation} onSolution_stepbystep={this.onSolution_stepbystep} />
           </Route>
-          <Route path="/sdf">
+          <Route path="/veletlen">
+            <VeletlenPage MatAlapTasks={this.state.MatAlapTasks} />
           </Route>
         </Switch>
       </Router>  
