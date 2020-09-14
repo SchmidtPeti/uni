@@ -15,7 +15,7 @@ class GeneralCard extends Component{
         console.log(this.props);
         const {topic,task_type,task_description,solution,subject_name,major,semester} = this.props.AltanaosTask;
         return(
-            <Card style={{ width: '50rem'}} className="mx-auto mb-5">
+            <Card style={{ width: '80%'}} className="mx-auto mb-5">
             <Card.Body>
                   <Card.Title>{topic}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{task_type} | {major}/{subject_name}/{semester} félév</Card.Subtitle>

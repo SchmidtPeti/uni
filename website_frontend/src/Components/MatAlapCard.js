@@ -41,7 +41,7 @@ class MatAlapCard extends Component{
         const {topic,task_type,task_image,task_solution,task_solution_stepbystep} = this.props;
         const {solution_showed,solution_stepbystep_showed} = this.state;
         return (
-            <Card style={{ width: '50rem'}} className="mx-auto mb-5">
+            <Card style={{ width: '80%'}} className="mx-auto mb-5">
             <Card.Body>
                   <Card.Title>{topic}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">{task_type}</Card.Subtitle>

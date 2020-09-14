@@ -3,10 +3,25 @@ import {Form,Button} from 'react-bootstrap';
 
 
 
-const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTaskDesc,onFileChangeSolutation}) => {
+const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTaskDesc,onFileChangeSolutation,GeneralTasks}) => {
+  let HasSubjectName = [];
+  const GeneralTaskSubjectNames = GeneralTasks.map((GeneralTask,i)=>{
+          if(!HasSubjectName.includes(GeneralTasks[i].subject_name)){
+              HasSubjectName.push(GeneralTasks[i].subject_name);
+              return GeneralTask.subject_name;
+          }
+          else{
+              return "";
+          }
+  }); 
+  const Option_subName = GeneralTaskSubjectNames.map((SubjectName) =>{
+      if(SubjectName!=""){
+  return (<option>{SubjectName}</option>);
+      }
+  });
     return (
       <div className='whole_form'>
-        <Form>
+        <Form className="bg-light p-3">
         <Form.Group>
           <Form.File id="taskDescription_id" label="A feladat leírása..." name="task_description" onChange={onFileChangeTaskDesc} />
         </Form.Group>
@@ -36,7 +51,13 @@ const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
         </Form.Group>
         <Form.Group controlId="subject_id">
           <Form.Label>Mi a tantárgy neve az egyetmen?</Form.Label>
-          <Form.Control type="text" name="subject_name" placeholder="Hogy van a Neptunban?" onChange={myChangeHandler} />
+          <Form.Control type="text" name="subject_name" placeholder="Mi a neve a tantárgynak?" onChange={myChangeHandler} />
+          <Form.Group controlId="subject_examples">
+          <Form.Control as="select">
+                <option>MIlyen tantárgyak vannak már a rendszerben?</option>
+                {Option_subName}
+              </Form.Control>
+              </Form.Group>
         </Form.Group>
         <Form.Group controlId="university_id">
           <Form.Label>Melyik egyetmen van ez a tantárgy</Form.Label>
@@ -54,7 +75,6 @@ const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
           <Form.Label>Hol elérhető a megoldó?</Form.Label>
           <Form.Control type="text" name="solution_by_credit" placeholder="A legjobb valamilyen weblap" onChange={myChangeHandler} />
         </Form.Group>
-      </Form>
       <Form.Group controlId="hardness_id">
               <Form.Label>Mennyi időt vett a fel feladat(az egységek relativitást jelölnek)</Form.Label>
               <Form.Control as="select" name="time" onChange={myChangeHandler}>
@@ -80,6 +100,8 @@ const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
       <Button type="submit" className="mb-2" onClick={submitMatAlap}>
             Feltöltés!
       </Button>
+      </Form>
+
       </div>
     )
 }

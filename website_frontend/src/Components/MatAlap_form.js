@@ -3,10 +3,25 @@ import {Form,Button} from 'react-bootstrap';
 
 
 
-const MatAlap_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTaskDesc,onFileChangeSolutation}) => {
+const MatAlap_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTaskDesc,onFileChangeSolutation,MatAlapTasks}) => {
+  let HasCateg = [];
+  const MatAlapCategories = MatAlapTasks.map((MatAlapTask,i)=>{
+          if(!HasCateg.includes(MatAlapTasks[i].topic)){
+              HasCateg.push(MatAlapTasks[i].topic);
+              return MatAlapTask.topic;
+          }
+          else{
+              return "";
+          }
+  }); 
+  const Option_Cat = MatAlapCategories.map((Category) =>{
+      if(Category!==""){
+  return (<li key={Category}>{Category}</li>);
+      }
+  });
     return (
       <div className='whole_form'>
-        <Form>
+        <Form className="bg-light p-3">
         <Form.Group>
           <Form.File id="taskDescription_id" label="A feladat leírása..." name="task_description" onChange={onFileChangeTaskDesc} />
         </Form.Group>
@@ -21,6 +36,11 @@ const MatAlap_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
         <Form.Group controlId="topic_id">
           <Form.Label>Téma</Form.Label>
           <Form.Control type="text" placeholder="Milyen témákörben a feladat(Algebra,Valőszínűség)" name="topic" onChange={myChangeHandler}/>
+        </Form.Group>
+        <Form.Group controlId="topic_examples">
+          Ezek már voltak
+          <ul>{Option_Cat}</ul>
+          
         </Form.Group>
         <Form.Group controlId="task_level_id">
           <Form.Label>Milyen szinten vannak a kérdések?</Form.Label>
@@ -54,7 +74,6 @@ const MatAlap_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
           <Form.Label>Hol elérhető a megoldó?</Form.Label>
           <Form.Control type="text" name="solutation_by_credit" placeholder="A legjobb valamilyen weblap" onChange={myChangeHandler} />
         </Form.Group>
-      </Form>
       <Form.Group controlId="hardness_id">
               <Form.Label>Mennyi időt vett a fel feladat(az egységek relativitást jelölnek)</Form.Label>
               <Form.Control as="select" name="time" onChange={myChangeHandler}>
@@ -80,6 +99,7 @@ const MatAlap_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
       <Button type="submit" className="mb-2" onClick={submitMatAlap}>
             Feltöltés!
       </Button>
+      </Form>
       </div>
     )
 }

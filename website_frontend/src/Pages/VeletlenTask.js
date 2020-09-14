@@ -11,7 +11,7 @@ class VeletlenPage extends Component{
         }
     }
     onClickFiler =  () =>{
-        const MatAlapTasks = this.props.MatAlapTasks.filter(x=>x.topic==this.state.selected_Category);
+        const MatAlapTasks = this.props.MatAlapTasks.filter(x=>x.topic===this.state.selected_Category);
         /*console.log("Hurka",MatAlapTasks);
         const FilerTasks_beingMade = MatAlapTasks.map((i,MatAlapTask)=>{
             if(MatAlapTask.topic == this.state.selected_Category){
@@ -36,7 +36,7 @@ class VeletlenPage extends Component{
                 }
         }); 
         const Option_Cat = MatAlapCategories.map((Category) =>{
-            if(Category!=""){
+            if(Category!==""){
         return (<option>{Category}</option>);
             }
         });
@@ -52,9 +52,10 @@ class VeletlenPage extends Component{
         "Nincs még kijelölve kategória";
 
         return(
-            <div>
+            <div >
+             <Form className="bg-light m-4">   
             <Form.Group controlId="exampleForm.ControlSelect1">
-            <Form.Label>Example select</Form.Label>
+            <Form.Label>Válassz kategóriát!</Form.Label>
             <Form.Control as="select" onChange={this.onSelectChange}>
                <option>Válassz valamit</option> 
               {Option_Cat}
@@ -62,6 +63,7 @@ class VeletlenPage extends Component{
           </Form.Group>
           <Button onClick={this.onClickFiler}>Mehet</Button>
             {fileterTasks}
+            </Form>
           </div>
         )
     }

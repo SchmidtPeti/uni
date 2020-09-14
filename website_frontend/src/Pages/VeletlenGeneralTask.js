@@ -13,7 +13,7 @@ class VeletlenGeneralTask extends Component{
         this.setState({selectedSubjectName:event.target.value});
     }
     onClickFiler =  () =>{
-        const GeneralTasks = this.props.GeneralTasks.filter(x=>x.subject_name==this.state.selectedSubjectName);
+        const GeneralTasks = this.props.GeneralTasks.filter(x=>x.subject_name===this.state.selectedSubjectName);
         /*console.log("Hurka",MatAlapTasks);
         const FilerTasks_beingMade = MatAlapTasks.map((i,MatAlapTask)=>{
             if(MatAlapTask.topic == this.state.selected_Category){
@@ -35,7 +35,7 @@ class VeletlenGeneralTask extends Component{
                 }
         }); 
         const Option_subName = GeneralTaskSubjectNames.map((SubjectName) =>{
-            if(SubjectName!=""){
+            if(SubjectName!==""){
         return (<option>{SubjectName}</option>);
             }
         });

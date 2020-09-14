@@ -1,5 +1,4 @@
 import React,{Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import HomePage from './Pages/Home';
 import AddMatAlapTask from './Pages/AddMatAlapTask';
@@ -11,7 +10,7 @@ import background from './images/background.jpg';
 import AltalanosPage from './Pages/AltalanosTasks';
 import VeletlenGeneralTask from './Pages/VeletlenGeneralTask';
 import {Nav} from 'react-bootstrap';
-import {Container,Row,Col,Card} from 'react-bootstrap';
+import {Container,Row,Col} from 'react-bootstrap';
 import {
   BrowserRouter as Router,
   Switch,
@@ -66,7 +65,6 @@ class App extends Component {
             isLoading: false,
         })
     });
-    console.log(this.state.GeneralTasks);
     };
       myChangeHandler = (event) => {//used on admin page to login
         let nam = event.target.name;
@@ -94,14 +92,17 @@ class App extends Component {
       this.setState({solution_stepbystep_showed : true})
   }
 
-    submitMatAlap = async () =>{
+    submitMatAlap = async (event) =>{
+        event.preventDefault();
         await this.uploadFileToS3(); //wrong input can t be fatal
+
         const {task_description,task_type,topic,level,solutation,major,solutation_stepbystep,solutation_by,solutation_by_credit,source,time,difficulty} = this.state;
         const playload = {task_description,task_type,topic,level,solutation,major,solutation_stepbystep,solutation_by,solutation_by_credit,source,time,difficulty};
         console.log(playload);
         api.insertMatAlapTask(playload).then(() => console.log("success")).catch(error => console.log(error));
     }
-    submitGeneralTask = async() =>{
+    submitGeneralTask = async(event) =>{
+      event.preventDefault();
       await this.uploadFileToS3_s(); //wrong input can t be fatal   
       const {task_description,task_type,topic,solution,major,solution_by,solution_by_credit,subject_name,semester,university,source,time,difficulty} = this.state;
       const playload = {task_description,task_type,topic,solution,major,subject_name,semester,university,solution_by,solution_by_credit,source,time,difficulty};
@@ -137,27 +138,27 @@ class App extends Component {
     return (
     <div className="App"  style={{backgroundImage : "url("+background+")", backgroundAttachment: "fixed", minHeight: 1000}}  >
       <Router>
-      <Nav defaultActiveKey="/home" as="ul" className="bg-dark">
+      <Nav defaultActiveKey="/home" as="ul" className="bg-dark navbar-collapse">
   <Nav.Item as="li">
     <Nav.Link>Uni_learning</Nav.Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-1"><Link to="/MatAlapok">Mat Alapok </Link></Nav.Link>
+    <Link to="/MatAlapok">Mat Alapok </Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-2"><Link to="/addMatek">Matek feladat hozzáadás</Link></Nav.Link>
+    <Link to="/addMatek">Matek feladat hozzáadás</Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-3"><Link to="/addEgyetemiTantargy">Egyetemi feladat hozzáadás</Link></Nav.Link>
+   <Link to="/addEgyetemiTantargy">Egyetemi feladat hozzáadás</Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-4"><Link to="/veletlen">Veletlen</Link></Nav.Link>
+    <Link to="/veletlen">Véletlen Matek feladat</Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-5"><Link to="/AltalanosTasks">Általános feladatok </Link></Nav.Link>
+    <Link to="/AltalanosTasks">Általános feladatok </Link>
   </Nav.Item>
   <Nav.Item as="li">
-    <Nav.Link eventKey="link-6"><Link to="/VeletlenAltalanosTaks">Véletlen általános feladatok </Link></Nav.Link>
+    <Link to="/VeletlenAltalanosTaks">Véletlen általános feladatok </Link>
   </Nav.Item>
 </Nav>
 <Container className="justify-content-md-center">
@@ -165,10 +166,10 @@ class App extends Component {
             <Col>
       <Switch>  
           <Route exact path="/addMatek">
-          <AddMatAlapTask myChangeHandler={this.myChangeHandler} submitMatAlap={this.submitMatAlap} onFileChange={this.onFileChange} onFileChangeTaskDesc={this.onFileChangeTaskDesc} onFileChangeSolutation={this.onFileChangeSolutation}/>           
+          <AddMatAlapTask myChangeHandler={this.myChangeHandler} submitMatAlap={this.submitMatAlap} onFileChange={this.onFileChange} onFileChangeTaskDesc={this.onFileChangeTaskDesc} onFileChangeSolutation={this.onFileChangeSolutation} MatAlapTasks={this.state.MatAlapTasks}/>           
           </Route>
           <Route exact path="/addEgyetemiTantargy">
-          <AddGeneralTask myChangeHandler={this.myChangeHandler} submitMatAlap={this.submitGeneralTask} onFileChange={this.onFileChange} onFileChangeTaskDesc={this.onFileChangeTaskDesc} onFileChangeSolutation={this.onFileChangeSolution}/>           
+          <AddGeneralTask myChangeHandler={this.myChangeHandler} submitMatAlap={this.submitGeneralTask} onFileChange={this.onFileChange} onFileChangeTaskDesc={this.onFileChangeTaskDesc} onFileChangeSolutation={this.onFileChangeSolution} GeneralTasks={this.state.GeneralTasks}/>           
           </Route>          
           <Route path="/MatAlapok">
             <HomePage MatAlapTasks={this.state.MatAlapTasks} solution_showed={this.state.solution_showed} solution_stepbystep_showed={this.state.solution_stepbystep_showed} onShowSolutation={this.onShowSolutation} onSolution_stepbystep={this.onSolution_stepbystep} />
