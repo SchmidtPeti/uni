@@ -11,7 +11,6 @@ const HomePage = ({MatAlapTasks,solution_showed,solution_stepbystep_showed,onSho
     return(
     <div className='app'>
                 {MatTaskCard}
-
     </div>   );
 };
 export default HomePage;

@@ -18,6 +18,7 @@ import {
   Link
 } from "react-router-dom";
 import api from './api/api';
+import Generate_zh from './Pages/Generate_zh';
 
 class App extends Component {
   constructor(props) {
@@ -87,7 +88,38 @@ class App extends Component {
     }
     onShowSolutation = () => {
       this.setState({solution_showed : true});
-  }
+    }
+    topic_list=(topic) =>{
+      let topic_list = [];
+      this.state.MatAlapTasks.forEach(task => {
+        if(task.topic===topic){
+          topic_list.push(task);
+        }
+      })
+      return topic_list;
+    }
+    generate_list = () => {
+      const topics = [
+        "Algebrai és gyökös kifejezések I.",
+        "Másodfokú egyenletek, egyenlőtlenségek",
+        "Algebrai és gyökös kifejezések II.",
+        "Exponenciális, logaritmusos kifejezések, egyenletek, egyenlőtlenségek",
+        "Trigonometrikus azonosságok, egyenletek, egyenlőtlenségek",
+        "Nagyságrend-őrző becslések és függvények további becslései",
+        "Kijelentések, kvantorok, logikai állítások I.",
+        "Kijelentések, kvantorok, logikai állítások II.",
+        "Kijelentések, kvantorok, logikai állítások III.",
+        "Teljes indukció",
+        "Matematikai alapok 1. zárthelyi"
+      ];
+      let filtered_MatAlapTasks_zh_list = [];
+      topics.forEach( (topic,index) => {
+        let topics_list = this.topic_list(topic);
+        filtered_MatAlapTasks_zh_list.push(topics_list[Math.floor(Math.random() * topics_list.length)]);
+        filtered_MatAlapTasks_zh_list.push(topics_list[Math.floor(Math.random() * topics_list.length)]);
+      });
+      return filtered_MatAlapTasks_zh_list;
+    }  
   onSolution_stepbystep = () => {
       this.setState({solution_stepbystep_showed : true})
   }
@@ -149,6 +181,9 @@ class App extends Component {
     <Link to="/addMatek">Matek feladat hozzáadás</Link>
   </Nav.Item>
   <Nav.Item as="li">
+    <Link to="/generatePage">Matek Zh 1. generálás</Link>
+  </Nav.Item>
+  <Nav.Item as="li">
    <Link to="/addEgyetemiTantargy">Egyetemi feladat hozzáadás</Link>
   </Nav.Item>
   <Nav.Item as="li">
@@ -182,7 +217,10 @@ class App extends Component {
           </Route>  
           <Route path="/VeletlenAltalanosTaks">
             <VeletlenGeneralTask GeneralTasks={this.state.GeneralTasks} />
-          </Route>  
+          </Route> 
+          <Route path="/generatePage">
+            <Generate_zh Generated_matalap_list={this.generate_list()} />
+          </Route>   
         </Switch>
         </Col>
             </Row> 
