@@ -47,7 +47,7 @@ class VeletlenPage extends Component{
         return <MatAlapCard topic={i.topic} task_type={i.task_type} task_image={i.task_description} task_solution={i.solutation} task_solution_stepbystep={i.solutation_stepbystep} />})
         : "Nincs ilyen feladat";*/
         const fileterTasks = (this.state.FilerTasks.length > 0) ? 
-        <MatAlapCard topic={RandomTask.topic} task_type={RandomTask.task_type} task_image={RandomTask.task_description} task_solution={RandomTask.solutation} task_solution_stepbystep={RandomTask.solutation_stepbystep} />
+        <MatAlapCard topic={RandomTask.topic} task_type={RandomTask.task_type} task_image={RandomTask.task_description} task_solution={RandomTask.solutation} task_solution_stepbystep={RandomTask.solutation_stepbystep}/>
         :
         "Nincs még kijelölve kategória";
 

@@ -31,6 +31,7 @@ class MatAlapCard extends Component{
             solution_stepbystep_showed : false,
         };
     }
+
     onShowSolutation = () => {
         this.setState({solution_showed : true});
     }
