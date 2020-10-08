@@ -1,16 +1,71 @@
 import React from 'react';
 import MatAlapCard from '../Components/MatAlapCard';
+import {Form,Button} from 'react-bootstrap';
 
 
-const HomePage = ({MatAlapTasks,solution_showed,solution_stepbystep_showed,onShowSolutation,onSolution_stepbystep}) =>{
-    const MatTaskCard = MatAlapTasks.map((MatalapTask,i)=>{
-        return (
-            <MatAlapCard topic={MatAlapTasks[i].topic} task_type={MatAlapTasks[i].task_type} task_image={MatAlapTasks[i].task_description} task_solution={MatAlapTasks[i].solutation} task_solution_stepbystep={MatAlapTasks[i].solutation_stepbystep}  />
-  )
-    });
-    return(
-    <div className='app'>
+class HomePage extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            MatAlapTasks : [],
+            From : 0,
+            current_category : "*",
+            to : 0,
+            max : 0,
+        }
+
+    }
+    componentDidMount(){
+        this.setState({MatAlapTasks : this.props.MatAlapTasks});
+    }
+    selectedCategory = (event) =>{
+        this.setState({current_category : event.target.value});
+    }
+    render(){
+        const {solution_showed,solution_stepbystep_showed,onShowSolutation,onSolution_stepbystep} = this.props;
+        const {MatAlapTasks} = this.state;
+        let HasCateg = [];
+        const MatAlapCategories = MatAlapTasks.map((MatAlapTask,i)=>{
+                if(!HasCateg.includes(MatAlapTasks[i].topic)){
+                    HasCateg.push(MatAlapTasks[i].topic);
+                    return MatAlapTask.topic;
+                }
+                else{
+                    return "";
+                }
+        }); 
+        const Option_Cat = MatAlapCategories.map((Category) =>{
+            if(Category!==""){
+        return (<option key={Category} value={Category}>{Category}</option>);
+            }
+        });
+        let filtered_MatAlapTasks = [];
+        for(let i=0;i<MatAlapTasks.length;i++){
+            if(this.state.current_category==="*"){
+                filtered_MatAlapTasks.push(MatAlapTasks[i]);
+                }
+                else if(MatAlapTasks[i].topic==this.state.current_category) {
+                    filtered_MatAlapTasks.push(MatAlapTasks[i]);
+                }
+        }
+        console.log("Lista",filtered_MatAlapTasks);
+        const MatTaskCard = filtered_MatAlapTasks.map((MatalapTask)=>{
+            return (
+                <MatAlapCard topic={MatalapTask.topic} task_type={MatalapTask.task_type} task_image={MatalapTask.task_description} task_solution={MatalapTask.solutation} task_solution_stepbystep={MatalapTask.solutation_stepbystep}  />
+            )
+        }).reverse();
+        return(
+            <div className='bg-light p-5 rounded'>
+                <Form.Group controlId="Matalap_Category">
+              <Form.Label>Milyen kategóriájú feladatok?</Form.Label>
+              <Form.Control as="select" name="Matalap_Category" onChange={this.selectedCategory}>
+                <option value="*">Kérlek válassz!</option>  
+                <option value="*">Összes</option>   
+                {Option_Cat}  
+              </Form.Control>
+                </Form.Group>
                 {MatTaskCard}
-    </div>   );
-};
+            </div>   
+        )}
+}
 export default HomePage;

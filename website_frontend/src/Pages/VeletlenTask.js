@@ -53,7 +53,7 @@ class VeletlenPage extends Component{
 
         return(
             <div >
-             <Form className="bg-light m-4">   
+             <Form className="bg-light m-4 rounded p-3">   
             <Form.Group controlId="exampleForm.ControlSelect1">
             <Form.Label>Válassz kategóriát!</Form.Label>
             <Form.Control as="select" onChange={this.onSelectChange}>

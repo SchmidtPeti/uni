@@ -38,11 +38,17 @@ class MatAlapCard extends Component{
     onSolution_stepbystep = () => {
         this.setState({solution_stepbystep_showed : true})
     }
+    setHiddenAnswers = () => {
+        this.setState({solution_showed: false, solution_stepbystep_showed:false})
+    }
+    componentWillReceiveProps(){
+        this.setHiddenAnswers();
+    }
     render() {
         const {topic,task_type,task_image,task_solution,task_solution_stepbystep} = this.props;
         const {solution_showed,solution_stepbystep_showed} = this.state;
         return (
-            <Card style={{ width: '80%'}} className="mx-auto mb-5">
+            <Card style={{ width: '80%'}} className="mx-auto shadow-sm p-3 mb-5 bg-white rounded">
             <Card.Body>
                   <Card.Title>{topic}</Card.Title>
                   <Card.Subtitle className="mb-2 text-muted">{task_type}</Card.Subtitle>

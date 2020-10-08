@@ -16,7 +16,7 @@ const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
   }); 
   const Option_subName = GeneralTaskSubjectNames.map((SubjectName) =>{
       if(SubjectName!=""){
-  return (<option>{SubjectName}</option>);
+  return (<li>{SubjectName}</li>);
       }
   });
     return (
@@ -53,10 +53,10 @@ const General_form = ({myChangeHandler,submitMatAlap,onFileChange,onFileChangeTa
           <Form.Label>Mi a tantárgy neve az egyetmen?</Form.Label>
           <Form.Control type="text" name="subject_name" placeholder="Mi a neve a tantárgynak?" onChange={myChangeHandler} />
           <Form.Group controlId="subject_examples">
-          <Form.Control as="select">
-                <option>MIlyen tantárgyak vannak már a rendszerben?</option>
+                Milyen tantárgyak vannak már a rendszerben?
+                <ul>
                 {Option_subName}
-              </Form.Control>
+                </ul>
               </Form.Group>
         </Form.Group>
         <Form.Group controlId="university_id">

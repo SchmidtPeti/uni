@@ -9,7 +9,7 @@ import S3FileUpload from 'react-s3';
 import background from './images/background.jpg';
 import AltalanosPage from './Pages/AltalanosTasks';
 import VeletlenGeneralTask from './Pages/VeletlenGeneralTask';
-import {Nav} from 'react-bootstrap';
+import {Nav,NavDropdown} from 'react-bootstrap';
 import {Container,Row,Col} from 'react-bootstrap';
 import {
   BrowserRouter as Router,
@@ -49,9 +49,10 @@ class App extends Component {
         solution_showed : false,
         solution_stepbystep_showed : false,
     }
+    this.loadData();
     
   }
-    componentDidMount = async () => {
+    loadData = async () => {
       this.setState({ isLoading: true })
 
       await api.getAllMatAlapTasks().then(MatAlapTasks => {
@@ -174,20 +175,15 @@ class App extends Component {
   <Nav.Item as="li">
     <Nav.Link>Uni_learning</Nav.Link>
   </Nav.Item>
+  <NavDropdown title="Matematika alapok" id="collasible-nav-dropdown">
+        <NavDropdown.Item><Link to="/MatAlapok">Mat Alapok </Link></NavDropdown.Item>
+        <NavDropdown.Item><Link to="/addMatek">Matek alap feladat hozzáadás</Link></NavDropdown.Item>
+        <NavDropdown.Item><Link to="/generatePage">Matek alapok 1. ZH generálás</Link></NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item><Link to="/veletlen">Véletlen Matek alap feladat</Link></NavDropdown.Item>
+      </NavDropdown>
   <Nav.Item as="li">
-    <Link to="/MatAlapok">Mat Alapok </Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Link to="/addMatek">Matek feladat hozzáadás</Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Link to="/generatePage">Matek Zh 1. generálás</Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-   <Link to="/addEgyetemiTantargy">Egyetemi feladat hozzáadás</Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Link to="/veletlen">Véletlen Matek feladat</Link>
+   <Link to="/addEgyetemiTantargy">Általános feladat hozzáadás</Link>
   </Nav.Item>
   <Nav.Item as="li">
     <Link to="/AltalanosTasks">Általános feladatok </Link>
