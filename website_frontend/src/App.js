@@ -182,15 +182,12 @@ class App extends Component {
         <NavDropdown.Divider />
         <NavDropdown.Item><Link to="/veletlen">Véletlen Matek alap feladat</Link></NavDropdown.Item>
       </NavDropdown>
-  <Nav.Item as="li">
-   <Link to="/addEgyetemiTantargy">Általános feladat hozzáadás</Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Link to="/AltalanosTasks">Általános feladatok </Link>
-  </Nav.Item>
-  <Nav.Item as="li">
-    <Link to="/VeletlenAltalanosTaks">Véletlen általános feladatok </Link>
-  </Nav.Item>
+  <NavDropdown title="Általános feladatok" id="collasible-nav-dropdown_id">
+        <NavDropdown.Item><Link to="/addEgyetemiTantargy">Általános feladat hozzáadás</Link></NavDropdown.Item>
+        <NavDropdown.Item><Link to="/AltalanosTasks">Általános feladatok</Link></NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item><Link to="/VeletlenAltalanosTaks">Véletlen általános feladatok </Link></NavDropdown.Item>
+      </NavDropdown>   
 </Nav>
 <Container className="justify-content-md-center">
             <Row>

@@ -7,27 +7,50 @@ class VeletlenGeneralTask extends Component{
         this.state = {
             selectedSubjectName : "",
             FilerTasks : [],
+            GeneralTasks: [],
+            db: 0,
+            max: 0,
+            randomTasksNumber: [],
         }
     }
     onSelectChange = (event) => {
+        this.setState({randomTasksNumber: []});
+        this.setState({db:0});
         this.setState({selectedSubjectName:event.target.value});
+        console.log("Itt: ",this.state.GeneralTasks);
+        this.setState({max : this.state.GeneralTasks.filter(x=>x.subject_name===event.target.value).length});
+        const filterTasks = this.state.GeneralTasks.filter(x=>x.subject_name===event.target.value);
+        this.setState({FilerTasks: filterTasks});
     }
     onClickFiler =  () =>{
-        const GeneralTasks = this.props.GeneralTasks.filter(x=>x.subject_name===this.state.selectedSubjectName);
-        /*console.log("Hurka",MatAlapTasks);
-        const FilerTasks_beingMade = MatAlapTasks.map((i,MatAlapTask)=>{
-            if(MatAlapTask.topic == this.state.selected_Category){
-                return MatAlapTasks[i];
+        const {FilerTasks} = this.state;
+        let max_probalkozasok = 10; //ne égjen ki 100-as nagyságoknál
+        let randomTasksNumber_ = [];
+        for(let i=0;i<this.state.db;i++){
+            let random_szam = Math.floor(Math.random()*FilerTasks.length);
+            let i = 0;
+            while(randomTasksNumber_.includes(random_szam)&&i<max_probalkozasok){
+                random_szam = Math.floor(Math.random()*FilerTasks.length);
+                i++;
             }
-        });*/
-         this.setState({FilerTasks: GeneralTasks});
-
+            if(i<max_probalkozasok){
+                randomTasksNumber_.push(random_szam);
+            }
+        }
+        this.setState({randomTasksNumber: randomTasksNumber_});
+    }
+    onChangeDb = (event) => {
+        this.setState({db: event.target.value});
+    }
+    componentDidMount(){
+        this.setState({GeneralTasks : this.props.GeneralTasks});
     }
     render(){
         let HasSubjectName = [];
-        const GeneralTaskSubjectNames = this.props.GeneralTasks.map((GeneralTask,i)=>{
-                if(!HasSubjectName.includes(this.props.GeneralTasks[i].subject_name)){
-                    HasSubjectName.push(this.props.GeneralTasks[i].subject_name);
+        const {FilerTasks,GeneralTasks,randomTasksNumber} = this.state;
+        const GeneralTaskSubjectNames = GeneralTasks===undefined ? [] : GeneralTasks.map((GeneralTask,i)=>{
+                if(!HasSubjectName.includes(GeneralTask.subject_name)){
+                    HasSubjectName.push(GeneralTask.subject_name);
                     return GeneralTask.subject_name;
                 }
                 else{
@@ -39,9 +62,13 @@ class VeletlenGeneralTask extends Component{
         return (<option>{SubjectName}</option>);
             }
         });
-        const RandomTask = this.state.FilerTasks[Math.floor(Math.random()*this.state.FilerTasks.length)];
-        const fileterTasks = (this.state.FilerTasks.length > 0) ? 
-        <GeneralCard AltanaosTask={RandomTask}  />
+        const RandomTasks = randomTasksNumber.length>0 ? randomTasksNumber.map((tasknumber)=>{
+            return (<GeneralCard AltanaosTask={FilerTasks[tasknumber]}  />);
+        }) : (<h1>Még nincs variáció</h1>);
+        const fileterTasks = (randomTasksNumber.length > 0) ? 
+        <div>
+        {RandomTasks}
+        </div>
         :
         "Nincs még kijelölve tantárgy név";
         return(
@@ -54,6 +81,9 @@ class VeletlenGeneralTask extends Component{
               {Option_subName}
             </Form.Control>
           </Form.Group>
+          <Form.Group>
+            <Form.Control type="number" onChange={this.onChangeDb} placeholder="Hány darabot?" min={0} value={this.state.db} max={this.state.max} />
+            </Form.Group>
           <Button onClick={this.onClickFiler}>Mehet</Button>
             {fileterTasks}
            </Form> 

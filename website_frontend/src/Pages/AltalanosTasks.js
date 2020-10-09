@@ -1,10 +1,62 @@
 import React from 'react';
-import GeneralCard from '../Components/GeneralCard'
+import GeneralCard from '../Components/GeneralCard';
+import {Form,Button} from 'react-bootstrap';
 
- const AltalanosPage = ({AltanaosTasks}) =>{
-     const AltalanosTasks = AltanaosTasks.map((i,AltanaosTask)=>{
-         return (<GeneralCard AltanaosTask={i}/>)
-     });
-    return (<div>{AltalanosTasks}</div>);
+
+ class AltalanosPage extends React.Component{
+     constructor(props){
+         super(props);
+         this.state = {
+            AltalanosTasks :[],
+            CurrentSubject: "*",
+         };
+     }
+     componentDidMount(){
+         this.setState({AltalanosTasks:this.props.AltalanosTasks})
+     }
+     onChangeSubject = (event) => {
+         this.setState({CurrentSubject:event.target.value});
+     }
+     render(){
+         const {AltanaosTasks} = this.props;
+        let HasSubjectName = [];
+        const GeneralTaskSubjectNames = AltanaosTasks.map((AltanaosTask,i)=>{
+                if(!HasSubjectName.includes(AltanaosTasks[i].subject_name)){
+                    HasSubjectName.push(AltanaosTasks[i].subject_name);
+                    return AltanaosTask.subject_name;
+                }
+                else{
+                    return "";
+                }
+        }); 
+        const Option_subName = GeneralTaskSubjectNames.map((SubjectName) =>{
+            if(SubjectName!=""){
+        return (<option value={SubjectName}>{SubjectName}</option>);
+            }
+        });
+        let filtered_AltalanosTasks = [];
+        for(let i=0;i<AltanaosTasks.length;i++){
+            if(this.state.CurrentSubject==="*"){
+                filtered_AltalanosTasks.push(AltanaosTasks[i]);
+                }
+                else if(AltanaosTasks[i].subject_name==this.state.CurrentSubject) {
+                    filtered_AltalanosTasks.push(AltanaosTasks[i]);
+                }
+        }
+        const AltalanosTasks = filtered_AltalanosTasks.map((i,AltanaosTask)=>{
+            return (<GeneralCard AltanaosTask={i}/>)
+        }).reverse();
+        return (<div className={"bg-light p-5 rounded"}>
+                            <Form.Group controlId="AltalanosSubject">
+              <Form.Label>Melyik tantárgy?</Form.Label>
+              <Form.Control as="select" name="AltalanosSubject" onChange={this.onChangeSubject}>
+                <option value="*">Kérlek válassz!</option>  
+                <option value="*">Összes</option>   
+                {Option_subName}  
+              </Form.Control>
+                </Form.Group>
+            {AltalanosTasks}
+            </div>);
+     }
  }
  export default AltalanosPage;
