@@ -17,7 +17,6 @@ class VeletlenGeneralTask extends Component{
         this.setState({randomTasksNumber: []});
         this.setState({db:0});
         this.setState({selectedSubjectName:event.target.value});
-        console.log("Itt: ",this.state.GeneralTasks);
         this.setState({max : this.state.GeneralTasks.filter(x=>x.subject_name===event.target.value).length});
         const filterTasks = this.state.GeneralTasks.filter(x=>x.subject_name===event.target.value);
         this.setState({FilerTasks: filterTasks});

@@ -8,21 +8,40 @@ class VeletlenPage extends Component{
         this.state = {
             selected_Category : "",
             FilerTasks : [],
+            db : 0,
+            max: 0,
+            RandomMatTaskNumber: [],
         }
     }
     onClickFiler =  () =>{
+        let max_probalkozasok = 10;
         const MatAlapTasks = this.props.MatAlapTasks.filter(x=>x.topic===this.state.selected_Category);
-        /*console.log("Hurka",MatAlapTasks);
-        const FilerTasks_beingMade = MatAlapTasks.map((i,MatAlapTask)=>{
-            if(MatAlapTask.topic == this.state.selected_Category){
-                return MatAlapTasks[i];
+        this.setState({FilerTasks: MatAlapTasks});
+        const {max,db} = this.state;
+        let randomTasksNumber_ = [];
+        for(let i=0;i<db;i++){
+            let random_szam = Math.floor(Math.random()*max);
+            let i = 0;
+            while(randomTasksNumber_.includes(random_szam)&&i<max_probalkozasok){
+                random_szam = Math.floor(Math.random()*max);
+                i++;
             }
-        });*/
-         this.setState({FilerTasks: MatAlapTasks});
+            if(i<max_probalkozasok){
+                randomTasksNumber_.push(random_szam);
+            }
+        }
+        this.setState({RandomMatTaskNumber: randomTasksNumber_});
 
     }
     onSelectChange = (event) => {
+        this.setState({RandomMatTaskNumber: []});
+        this.setState({db:0});
         this.setState({selected_Category:event.target.value});
+        const MatAlapTasks = this.props.MatAlapTasks.filter(x=>x.topic===event.target.value);
+        this.setState({max: MatAlapTasks.length}) ;
+    }
+    onChangeDb = (event) => {
+        this.setState({db : event.target.value})
     }
     render(){
         let HasCateg = [];
@@ -40,14 +59,13 @@ class VeletlenPage extends Component{
         return (<option>{Category}</option>);
             }
         });
-        const RandomTask = this.state.FilerTasks[Math.floor(Math.random()*this.state.FilerTasks.length)];
-        /*const FilterTaskRandom = 
-        const fileterTasks = (this.state.FilerTasks.length > 0) ? 
-        FilerTasks.map((i)=>{
-        return <MatAlapCard topic={i.topic} task_type={i.task_type} task_image={i.task_description} task_solution={i.solutation} task_solution_stepbystep={i.solutation_stepbystep} />})
-        : "Nincs ilyen feladat";*/
-        const fileterTasks = (this.state.FilerTasks.length > 0) ? 
-        <MatAlapCard topic={RandomTask.topic} task_type={RandomTask.task_type} task_image={RandomTask.task_description} task_solution={RandomTask.solutation} task_solution_stepbystep={RandomTask.solutation_stepbystep}/>
+         //ne égjen ki 100-as nagyságoknál
+        const {max,RandomMatTaskNumber,FilerTasks} = this.state;
+        //const RandomTask = this.state.FilerTasks[Math.floor(Math.random()*max)];
+        const fileterTasks = (max > 0) ? 
+        RandomMatTaskNumber.map((taskIndex) => {
+            return (<MatAlapCard topic={FilerTasks[taskIndex].topic} task_type={FilerTasks[taskIndex].task_type} task_image={FilerTasks[taskIndex].task_description} task_solution={FilerTasks[taskIndex].solutation} task_solution_stepbystep={FilerTasks[taskIndex].solutation_stepbystep}/>);
+        })
         :
         "Nincs még kijelölve kategória";
 
@@ -61,6 +79,9 @@ class VeletlenPage extends Component{
               {Option_Cat}
             </Form.Control>
           </Form.Group>
+          <Form.Group>
+            <Form.Control type="number" onChange={this.onChangeDb} placeholder="Hány darabot?" min={0} value={this.state.db} max={this.state.max} />
+            </Form.Group>
           <Button onClick={this.onClickFiler}>Mehet</Button>
             {fileterTasks}
             </Form>
