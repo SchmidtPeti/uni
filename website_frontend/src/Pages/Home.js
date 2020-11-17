@@ -9,7 +9,7 @@ class HomePage extends React.Component {
         this.state = {
             MatAlapTasks : [],
             From : 0,
-            current_category : "*",
+            current_category : "-",
             to : 0,
             max : 0,
         }
@@ -22,9 +22,8 @@ class HomePage extends React.Component {
         this.setState({current_category : event.target.value});
     }
     render(){
-        const {solution_showed,solution_stepbystep_showed,onShowSolutation,onSolution_stepbystep} = this.props;
-        const {MatAlapTasks} = this.state;
-        let HasCateg = [];
+        const {MatAlapTasks} = this.props;
+        let HasCateg = ["*"];
         const MatAlapCategories = MatAlapTasks.map((MatAlapTask,i)=>{
                 if(!HasCateg.includes(MatAlapTasks[i].topic)){
                     HasCateg.push(MatAlapTasks[i].topic);
@@ -39,16 +38,27 @@ class HomePage extends React.Component {
         return (<option key={Category} value={Category}>{Category}</option>);
             }
         });
+        const MAX_FELADATOK_ALAPBOL=10;
+        let feladatokSzamolo = 0;
         let filtered_MatAlapTasks = [];
+        const ujakElol=MatAlapTasks.reverse();
         for(let i=0;i<MatAlapTasks.length;i++){
             if(this.state.current_category==="*"){
                 filtered_MatAlapTasks.push(MatAlapTasks[i]);
+                }
+                else if(this.state.current_category==="-"){
+                    if(feladatokSzamolo<MAX_FELADATOK_ALAPBOL){
+                        filtered_MatAlapTasks.push(ujakElol[i]);
+                        feladatokSzamolo++;
+                    }
                 }
                 else if(MatAlapTasks[i].topic==this.state.current_category) {
                     filtered_MatAlapTasks.push(MatAlapTasks[i]);
                 }
         }
-        console.log("Lista",filtered_MatAlapTasks);
+        if(this.state.current_category==="-"){
+            filtered_MatAlapTasks.reverse();
+        }
         const MatTaskCard = filtered_MatAlapTasks.map((MatalapTask)=>{
             return (
                 <MatAlapCard topic={MatalapTask.topic} task_type={MatalapTask.task_type} task_image={MatalapTask.task_description} task_solution={MatalapTask.solutation} task_solution_stepbystep={MatalapTask.solutation_stepbystep}  />
@@ -59,7 +69,7 @@ class HomePage extends React.Component {
                 <Form.Group controlId="Matalap_Category">
               <Form.Label>Milyen kategóriájú feladatok?</Form.Label>
               <Form.Control as="select" name="Matalap_Category" onChange={this.selectedCategory}>
-                <option value="*">Kérlek válassz!</option>  
+                <option value="-">Kérlek válassz!</option>  
                 <option value="*">Összes</option>   
                 {Option_Cat}  
               </Form.Control>
