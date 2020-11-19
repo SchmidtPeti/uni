@@ -41,7 +41,8 @@ class HomePage extends React.Component {
         const MAX_FELADATOK_ALAPBOL=10;
         let feladatokSzamolo = 0;
         let filtered_MatAlapTasks = [];
-        const ujakElol=MatAlapTasks.reverse();
+        let ujakElol=MatAlapTasks;
+        ujakElol.reverse();
         for(let i=0;i<MatAlapTasks.length;i++){
             if(this.state.current_category==="*"){
                 filtered_MatAlapTasks.push(MatAlapTasks[i]);
@@ -56,9 +57,7 @@ class HomePage extends React.Component {
                     filtered_MatAlapTasks.push(MatAlapTasks[i]);
                 }
         }
-        if(this.state.current_category==="-"){
-            filtered_MatAlapTasks.reverse();
-        }
+        filtered_MatAlapTasks.reverse();
         const MatTaskCard = filtered_MatAlapTasks.map((MatalapTask)=>{
             return (
                 <MatAlapCard topic={MatalapTask.topic} task_type={MatalapTask.task_type} task_image={MatalapTask.task_description} task_solution={MatalapTask.solutation} task_solution_stepbystep={MatalapTask.solutation_stepbystep}  />

@@ -8,7 +8,7 @@ import {Form,Button} from 'react-bootstrap';
          super(props);
          this.state = {
             AltalanosTasks :[],
-            CurrentSubject: "*",
+            CurrentSubject: "-",    
          };
      }
      componentDidMount(){
@@ -18,7 +18,7 @@ import {Form,Button} from 'react-bootstrap';
          this.setState({CurrentSubject:event.target.value});
      }
      render(){
-         const {AltanaosTasks} = this.props;
+        const {AltanaosTasks} = this.props;
         let HasSubjectName = [];
         const GeneralTaskSubjectNames = AltanaosTasks.map((AltanaosTask,i)=>{
                 if(!HasSubjectName.includes(AltanaosTasks[i].subject_name)){
@@ -29,33 +29,43 @@ import {Form,Button} from 'react-bootstrap';
                     return "";
                 }
         }); 
+        const Loading = <div>"malac"</div>;
         const Option_subName = GeneralTaskSubjectNames.map((SubjectName) =>{
             if(SubjectName!=""){
-        return (<option value={SubjectName}>{SubjectName}</option>);
+        return (<option key={SubjectName} value={SubjectName}>{SubjectName}</option>);
             }
         });
+        const MAX_ALTALNOS_AZ_ELEJEN=10;
+        let maxAltCounter=0;
         let filtered_AltalanosTasks = [];
+        let az_elso_kidobos_lista = AltanaosTasks;
+        az_elso_kidobos_lista.reverse();
         for(let i=0;i<AltanaosTasks.length;i++){
             if(this.state.CurrentSubject==="*"){
                 filtered_AltalanosTasks.push(AltanaosTasks[i]);
-                }
-                else if(AltanaosTasks[i].subject_name==this.state.CurrentSubject) {
-                    filtered_AltalanosTasks.push(AltanaosTasks[i]);
-                }
+            }
+            else if(AltanaosTasks[i].subject_name==this.state.CurrentSubject) {
+                filtered_AltalanosTasks.push(AltanaosTasks[i]);
+            }
+            else if(this.state.CurrentSubject==="-"&&maxAltCounter<MAX_ALTALNOS_AZ_ELEJEN){
+                filtered_AltalanosTasks.push(az_elso_kidobos_lista[i]);    
+                maxAltCounter++;
+            }
         }
         const AltalanosTasks = filtered_AltalanosTasks.map((i,AltanaosTask)=>{
-            return (<GeneralCard AltanaosTask={i}/>)
+            return (<GeneralCard key={i} AltanaosTask={i}/>)
         }).reverse();
         return (<div className={"bg-light p-5 rounded"}>
                             <Form.Group controlId="AltalanosSubject">
               <Form.Label>Melyik tantárgy?</Form.Label>
               <Form.Control as="select" name="AltalanosSubject" onChange={this.onChangeSubject}>
-                <option value="*">Kérlek válassz!</option>  
+                <option value="-">Kérlek válassz!</option>  
                 <option value="*">Összes</option>   
                 {Option_subName}  
               </Form.Control>
                 </Form.Group>
-            {AltalanosTasks}
+                
+            {this.props.isLoading ?  Loading : AltalanosTasks}
             </div>);
      }
  }

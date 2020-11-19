@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import './App.css';
-import HomePage from './Pages/Home';
+import HomePage from './Pages/MatTasks';
 import AddMatAlapTask from './Pages/AddMatAlapTask';
 import AddGeneralTask from './Pages/AddGeneralTask';
 import VeletlenPage from './Pages/VeletlenTask';
@@ -206,7 +206,7 @@ class App extends Component {
             <VeletlenPage MatAlapTasks={this.state.MatAlapTasks} />
           </Route>
           <Route path="/AltalanosTasks">
-            <AltalanosPage AltanaosTasks={this.state.GeneralTasks} />
+            <AltalanosPage AltanaosTasks={this.state.GeneralTasks} isLoading={this.state.isLoading} />
           </Route>  
           <Route path="/VeletlenAltalanosTaks">
             <VeletlenGeneralTask GeneralTasks={this.state.GeneralTasks} />
